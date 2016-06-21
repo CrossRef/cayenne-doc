@@ -1,0 +1,16 @@
+get:
+  summary: A DOI work type
+  description: |
+    Returns information (ID and friendly label) about a single DOI work type.
+  tags:
+    - Types
+  parameters:
+    - name: typeId
+      in: path
+      required: true
+      type: string
+  responses:
+    200:
+      description: Message JSON with type `type`
+    404:
+      description: Specified `typeId` does not exist

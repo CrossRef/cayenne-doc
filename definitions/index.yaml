@@ -1,0 +1,2 @@
+getWorks:
+  $ref: "./get-works.yaml"

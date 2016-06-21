@@ -1,0 +1,5 @@
+get:
+  summary: List license URLs mentioned in Crossref metadata
+  description: |
+    Equivalent to faceting on `/works`, e.g.
+    `/works?facet=license-uri&rows=0`.
