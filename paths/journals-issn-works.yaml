@@ -1,7 +1,0 @@
-get:
-  $ref: "#/definitions/getWorks"
-  parameters:
-    - name: issn
-      in: path
-      required: true
-      type: string

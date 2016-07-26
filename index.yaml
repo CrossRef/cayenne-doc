@@ -11,6 +11,173 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  $ref: "./paths/index.yaml"
+  /types:
+  /types/{typeid}:
+  /types/{typeid}/works:
+  /works:
+    $ref: '#/getWorks'
+  /works/{doi}:
+  /works/{doi}/agency:
+  /works/{doi}/transform/{representation}:
+  /works/{doi}.xml:
+  /funders:
+  /funders/{funderDoi}:
+  /funders/{funderDoi}/works:
+  /members:
+  /members/{memberId}:
+  /members/{memberId}/works:
+  /prefixes:
+  /prefixes/{doiPrefix}:
+  /prefixes/{doiPrefix}/works:
+  /journals:
+  /journals/{issn}:
+  /journals/{issn}/works:
+  /licenses:
+  
 definitions:
-  $ref: "./definitions/index.yaml"        
+  getWorks:
+    tags:
+      - Works
+    parameters:
+      - name: query
+        type: string
+        in: query
+      - name: query.title
+        type: string
+        in: query
+      - name: query.container-title
+        type: string
+      - name: query.author
+        type: string
+      - name: query.editor
+        type: string
+      - name: query.translator
+        type: string
+      - name: query.chair
+        type: string
+      - name: query.contributor
+        type: string
+      - name: filter
+      - name: facet
+      - name: sample
+      - name: rows
+      - name: offset
+      - name: cursor
+      - name: sort
+      - name: order
+        type: string
+        enum: ["asc", "desc"]
+    schema:
+      $ref: '#/definitions/Work'
+
+  Work:
+    type: object
+    required:
+      - publisher
+      - title
+      - reference-count
+      - source
+      - prefix
+      - DOI
+      - member
+      - created
+      - deposited
+      - indexed
+      - issued
+    properties:
+      publisher:
+        type: string
+      title:
+        type: array
+      reference-count:
+        type: number
+      source:
+        type: string
+      prefix:
+        type: url
+      DOI:
+        type: string
+      member:
+        type: url
+      type:
+        type: string
+      created:
+        $ref: '#/definitions/Date'
+      deposited:
+        $ref: '#/definitions/Date'      
+      indexed:
+        $ref: '#/definitions/Date'      
+      issued:
+        $ref: '#/definitions/PartialDate'
+      subtitle:
+        type: array
+      container-title:
+        type: array
+      issue:
+        type: string
+      volume:
+        type: string
+      page:
+        type: string
+      article-nuber:
+        type: string
+      published-print:
+        $ref: '#/definitions/PartialDate'
+      published-online:
+        $ref: '#/defintions/PartialDate'
+      subject:
+        type: array
+      ISSN:
+        type: array
+      ISBN:
+        type: array
+      archive:
+        type: array
+      license:
+        type: array
+        schema:
+          $ref: '#/defintions/License'
+      funder:
+        type: array
+      assertion:
+        type: array
+      author:
+        type: array
+      editor:
+        type: array
+      chair:
+        type: array
+      translator:
+        type: array
+      update-to:
+        type: array
+      update-policy:
+        type: url
+      link:
+        type: array
+      clinical-trial-number:
+        type: array
+      alternative-id:
+        type: array
+
+  Funder:
+
+  ClinicalTrialNumber:
+
+  Contributor:
+
+  Affiliation:
+
+  Date:
+
+  PartialDate:
+
+  Update:
+
+  Assertion:
+
+  AssertionGroup:
+
+  License:
+
+  ResourceLink:

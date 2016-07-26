@@ -1,9 +1,0 @@
-get:
-  $ref: "#/definitions/getWorks"
-  tags:
-    - Types
-  parameters:
-    - name: typeId
-      in: path
-      required: true
-      type: string

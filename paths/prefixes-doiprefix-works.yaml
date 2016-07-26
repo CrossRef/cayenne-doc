@@ -1,7 +1,0 @@
-get:
-  $ref: "#/definitions/getWorks"
-  parameters:
-    - name: doiPrefix
-      in: path
-      required: true
-      type: string
