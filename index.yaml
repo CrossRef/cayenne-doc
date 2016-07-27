@@ -14,6 +14,7 @@ paths:
   /types:
   /types/{typeid}:
   /types/{typeid}/works:
+    $ref: '#/getWorks'
   /works:
     $ref: '#/getWorks'
   /works/{doi}:
@@ -23,15 +24,19 @@ paths:
   /funders:
   /funders/{funderDoi}:
   /funders/{funderDoi}/works:
+    $ref: '#/getWorks'
   /members:
   /members/{memberId}:
   /members/{memberId}/works:
+    $ref: '#/getWorks'
   /prefixes:
   /prefixes/{doiPrefix}:
   /prefixes/{doiPrefix}/works:
+    $ref: '#/getWorks'
   /journals:
   /journals/{issn}:
   /journals/{issn}/works:
+    $ref: '#/getWorks'
   /licenses:
   
 definitions:
@@ -89,16 +94,18 @@ definitions:
         type: string
       title:
         type: array
+        items:
+          type: string
       reference-count:
         type: number
       source:
         type: string
       prefix:
-        type: url
+        type: string
       DOI:
         type: string
       member:
-        type: url
+        type: string
       type:
         type: string
       created:
@@ -111,8 +118,12 @@ definitions:
         $ref: '#/definitions/PartialDate'
       subtitle:
         type: array
+        items:
+          type: string
       container-title:
         type: array
+        items:
+          type: string
       issue:
         type: string
       volume:
@@ -127,57 +138,227 @@ definitions:
         $ref: '#/defintions/PartialDate'
       subject:
         type: array
+        items:
+          type: string
       ISSN:
         type: array
+        items:
+          type: string
       ISBN:
         type: array
+        items:
+          type: string
       archive:
         type: array
+        items:
+          type: string
       license:
         type: array
-        schema:
+        items:
           $ref: '#/defintions/License'
       funder:
         type: array
+        items:
+          $ref: '#/definitions/Funder'
       assertion:
         type: array
+        items:
+          $ref: '#/definitions/Assertion'
       author:
         type: array
+        items:
+          $ref: '#/definitions/Contributor'
       editor:
         type: array
+        items:
+          $ref: '#/definitions/Contributor'
       chair:
         type: array
+        items:
+          $ref: '#/definitions/Contributor'
       translator:
         type: array
+        items:
+          $ref: '#/definitions/Contributor'
       update-to:
         type: array
+        items:
+          $ref: '#/definitions/Update'
       update-policy:
-        type: url
+        type: string
       link:
         type: array
+        items:
+          $ref: '#/definitions/ResourceLink'
       clinical-trial-number:
         type: array
+        items:
+          $ref: '#/definitions/ClinicalTrialNumber'
       alternative-id:
         type: array
+        items:
+          type: string
 
   Funder:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      DOI:
+        type: string
+      award:
+        type: array
+        items:
+          type: string
+      doi-asserted-by:
+        type: string
+        enum: ['crossref', 'publisher']
 
   ClinicalTrialNumber:
+    type: object
+    required:
+      - clinical-trial-number
+      - registry
+    properties:
+      clinical-trial-number:
+        type: string
+      registry:
+        type: string
+      type:
+        type: string
+        enum: ['preResults', 'results', 'postResults']
 
   Contributor:
+    type: object
+    required:
+      - family-name
+    properties:
+      family-name:
+        type: string
+      given-name:
+        type: string
+      ORCID:
+        type: string
+      affiliation:
+        type: array
+        items:
+          $ref: '#/definitions/Affiliation'
 
   Affiliation:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
 
   Date:
+    type: object
+    required:
+      - date-parts
+      - timestamp
+      - date-time
+    properties:
+      date-parts:
+        type: array
+        items:
+          type: integer
+      timestamp:
+        type: integer
+      date-time:
+        type: string
 
   PartialDate:
+    type: object
+    required:
+      - date-parts
+    properties:
+      date-parts:
+        type: array
+        items:
+          type: integer
 
   Update:
-
+    type: object
+    required:
+      - updated
+      - DOI
+      - type
+    properties:
+      updated:
+        $ref: '#/definitions/PartialDate'
+      DOI:
+        type: string
+      type:
+        type: string
+      label:
+        type: string
+        
   Assertion:
+    type: object
+    required:
+      - name
+      - value
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      URL:
+        type: string
+      explanation:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+      group:
+        $ref: '#/definitions/AssertionGroup'
 
   AssertionGroup:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      label:
+        type: string
 
   License:
+    type: object
+    required:
+      - content-version
+      - delay-in-days
+      - start
+      - URL
+    properties:
+      content-version:
+        type: string
+        enum: ['vor', 'am', 'tdm', 'unspecified']
+      delay-in-days:
+        type: integer
+      start:
+        $ref: '#/definitions/PartialDate'
+      URL:
+        type: string
 
   ResourceLink:
+    type: object
+    required:
+      - intended-application
+      - content-version
+      - URL
+    properties:
+      intended-application:
+        type: string
+        enum: ['text-mining', 'unspecified']
+      content-version:
+        type: string
+        enum: ['vor', 'am', 'tdm', 'unspecified']
+      URL:
+        type: string
+      content-type:
+        type: string
