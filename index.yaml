@@ -75,6 +75,81 @@ definitions:
     schema:
       $ref: '#/definitions/Work'
 
+  QueryInformation:
+    type: object
+    required:
+      - search-terms
+      - start-index
+    properties:
+      search-terms:
+        type: string
+      start-index:
+        type: integer
+
+  FacetResults:
+    type: object
+
+  WorkMessage:
+    type: object
+    required:
+      - status
+      - message-type
+      - message-version
+      - message
+    properties:
+      status:
+        type: string
+        value: 'ok'
+      message-type:
+        type: string
+        value: 'work'
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/Work'
+
+  WorkListMessage:
+    type: object
+    required:
+      - status
+      - message-type
+      - message-version
+      - message
+    properties:
+      status:
+        type: string
+        value: 'ok'
+      message-type:
+        type: string
+        value: 'work-list'
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/WorkList'
+
+  WorkList:
+    type: object
+    required:
+      - query
+      - items-per-page
+      - items
+      - total-results
+      - facets
+    properties:
+      query:
+        $ref: '#/definitions/QueryInformation'
+      items-per-page:
+        type: integer
+      total-results:
+        type: integer
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Work'
+      facets:
+        $ref: '#/definitions/FacetResults'
+        
+
   Work:
     type: object
     required:
