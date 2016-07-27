@@ -14,66 +14,153 @@ paths:
   /types:
   /types/{typeid}:
   /types/{typeid}/works:
-    $ref: '#/getWorks'
+    $ref: '#/definitions/getWorks'
   /works:
-    $ref: '#/getWorks'
+    $ref: '#/definitions/getWorks'
   /works/{doi}:
+    get:
+      tags:
+        - Works
+        - ID Lookup
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/WorkMessage'
   /works/{doi}/agency:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/WorkAgencyMessage'
   /works/{doi}/transform/{representation}:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+        - name: representation
+          in: path
+          type: string
+          required: true
   /works/{doi}.xml:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
   /funders:
   /funders/{funderDoi}:
   /funders/{funderDoi}/works:
-    $ref: '#/getWorks'
+    $ref: '#/definitions/getWorks'
   /members:
   /members/{memberId}:
   /members/{memberId}/works:
-    $ref: '#/getWorks'
+    $ref: '#/definitions/getWorks'
   /prefixes:
   /prefixes/{doiPrefix}:
   /prefixes/{doiPrefix}/works:
-    $ref: '#/getWorks'
+    $ref: '#/definitions/getWorks'
   /journals:
   /journals/{issn}:
   /journals/{issn}/works:
-    $ref: '#/getWorks'
+    $ref: '#/defintions/getWorks'
   /licenses:
   
 definitions:
+  FilterDefinition:
+    type: string
+
+  FacetDefinition:
+    type: string
+
   getWorks:
-    tags:
-      - Works
-    parameters:
-      - name: query
-        type: string
-        in: query
-      - name: query.title
-        type: string
-        in: query
-      - name: query.container-title
-        type: string
-      - name: query.author
-        type: string
-      - name: query.editor
-        type: string
-      - name: query.translator
-        type: string
-      - name: query.chair
-        type: string
-      - name: query.contributor
-        type: string
-      - name: filter
-      - name: facet
-      - name: sample
-      - name: rows
-      - name: offset
-      - name: cursor
-      - name: sort
-      - name: order
-        type: string
-        enum: ["asc", "desc"]
-    schema:
-      $ref: '#/definitions/Work'
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+      parameters:
+        - name: query
+          type: string
+          in: query
+        - name: query.title
+          type: string
+          in: query
+        - name: query.container-title
+          type: string
+          in: query
+        - name: query.author
+          type: string
+          in: query
+        - name: query.editor
+          type: string
+          in: query
+        - name: query.translator
+          type: string
+          in: query
+        - name: query.chair
+          type: string
+          in: query
+        - name: query.contributor
+          type: string
+          in: query
+        - name: filter
+          in: query
+          type: array
+          items:
+            $ref: '#/definitions/FilterDefinition'
+          collectionFormat: csv
+        - name: facet
+          in: query
+          type: array
+          items:
+            $ref: '#/definitions/FacetDefintions'
+          collectionFormat: csv
+        - name: sample
+          type: integer
+          in: query
+        - name: rows
+          type: integer
+          in: query
+        - name: offset
+          type: integer
+          in: query
+        - name: cursor
+          type: string
+          in: query
+        - name: sort
+          in: query
+        - name: order
+          in: query
+          type: string
+          enum: ["asc", "desc"]
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/WorkListMessage'
 
   QueryInformation:
     type: object
