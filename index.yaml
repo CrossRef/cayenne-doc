@@ -12,16 +12,106 @@ produces:
   - application/json
 paths:
   /types:
+    get:
+      tags:
+        - Types
+        - List
+      responses:
+        200:
+          description: A list of work types
+          schema:
+            $ref: '#/definitions/TypeListMessage'
   /types/{typeid}:
+    get:
+      tags:
+        - Types
+        - Identifier Lookup
+      parameters:
+        - name: typeid
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A work type
+          schema:
+            $ref: '#/definitions/TypeMessage'
   /types/{typeid}/works:
-    $ref: '#/definitions/getWorks'
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Types
+      parameters:
+        - name: typeid
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
   /works:
-    $ref: '#/definitions/getWorks'
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
   /works/{doi}:
     get:
       tags:
         - Works
-        - ID Lookup
+        - Identifier Lookup
       parameters:
         - name: doi
           in: path
@@ -29,6 +119,7 @@ paths:
           required: true
       responses:
         200:
+          description: A work metadata record
           schema:
             $ref: '#/definitions/WorkMessage'
   /works/{doi}/agency:
@@ -42,6 +133,7 @@ paths:
           required: true
       responses:
         200:
+          description: A registration agency
           schema:
             $ref: '#/definitions/WorkAgencyMessage'
   /works/{doi}/transform/{representation}:
@@ -57,6 +149,11 @@ paths:
           in: path
           type: string
           required: true
+      responses:
+        200:
+          description: A work metadata record rendered in the specified representation
+          schema:
+            type: string
   /works/{doi}.xml:
     get:
       tags:
@@ -66,92 +163,69 @@ paths:
           in: path
           type: string
           required: true
+      responses:
+        200:
+          description: A work metadata record rendered as Crossref UNIXSD XML
+          schema:
+            type: string
   /funders:
+    get:
+      tags:
+        - Funders
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of funders
+          schema:
+            $ref: '#/definitions/FunderListMessage'
   /funders/{funderDoi}:
+    get:
+      tags:
+        - Funders
+        - Identifier Lookup
+      parameters:
+        - name: funderDoi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A funder record
+          schema:
+            $ref: '#/definitions/FunderMessage'
   /funders/{funderDoi}/works:
-    $ref: '#/definitions/getWorks'
-  /members:
-  /members/{memberId}:
-  /members/{memberId}/works:
-    $ref: '#/definitions/getWorks'
-  /prefixes:
-  /prefixes/{doiPrefix}:
-  /prefixes/{doiPrefix}/works:
-    $ref: '#/definitions/getWorks'
-  /journals:
-  /journals/{issn}:
-  /journals/{issn}/works:
-    $ref: '#/defintions/getWorks'
-  /licenses:
-  
-definitions:
-  FilterDefinition:
-    type: string
-
-  FacetDefinition:
-    type: string
-
-  getWorks:
     get:
       tags:
         - Works
         - Query
         - List
+        - Funders
       parameters:
-        - name: query
+        - name: funderDoi
+          in: path
+          required: true
           type: string
-          in: query
-        - name: query.title
-          type: string
-          in: query
-        - name: query.container-title
-          type: string
-          in: query
-        - name: query.author
-          type: string
-          in: query
-        - name: query.editor
-          type: string
-          in: query
-        - name: query.translator
-          type: string
-          in: query
-        - name: query.chair
-          type: string
-          in: query
-        - name: query.contributor
-          type: string
-          in: query
-        - name: filter
-          in: query
-          type: array
-          items:
-            $ref: '#/definitions/FilterDefinition'
-          collectionFormat: csv
-        - name: facet
-          in: query
-          type: array
-          items:
-            $ref: '#/definitions/FacetDefintions'
-          collectionFormat: csv
-        - name: sample
-          type: integer
-          in: query
-        - name: rows
-          type: integer
-          in: query
-        - name: offset
-          type: integer
-          in: query
-        - name: cursor
-          type: string
-          in: query
-        - name: sort
-          in: query
-        - name: order
-          in: query
-          type: string
-          enum: ["asc", "desc"]
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
       produces:
         - application/json
       schemes:
@@ -159,9 +233,304 @@ definitions:
         - https
       responses:
         200:
+          description: A list of work metadata records
           schema:
             $ref: '#/definitions/WorkListMessage'
+  /members:
+    get:
+      tags:
+        - Members
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of Crossref members
+          schema:
+            $ref: '#/definitions/MemberListMessage'
+  /members/{memberId}:
+    get:
+      tags:
+        - Members
+        - Identifier Lookup
+      parameters:
+        - name: memberId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A Crossref member record
+          schema:
+            $ref: '#/definitions/MemberMessage'
+  /members/{memberId}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Members
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /prefixes/{doiPrefix}:
+    get:
+      tags:
+        - Prefixes
+        - Identifier Lookup
+      parameters:
+        - name: doiPrefix
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A DOI owner prefix record
+          schema:
+            $ref: '#/definitions/PrefixMessage'
+  /prefixes/{doiPrefix}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Prefixes
+      parameters:
+        - name: doiPrefix
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /journals:
+    get:
+      tags:
+        - Journals
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of journals
+          schema:
+            $ref: '#/definitions/JournalListMessage'
+  /prefixes:
+    get:
+      tags:
+        - Prefixes
+        - List
+      parameters:
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of DOI owner prefixes
+          schema:
+            $ref: '#/definitions/PrefixListMessage'
+  /journals/{issn}:
+    get:
+      tags:
+        - Journals
+        - Identifier Lookup
+      parameters:
+        - name: issn
+          required: true
+          in: path
+          type: string
+      responses:
+        200:
+          description: A journal record
+          schema:
+            $ref: '#/definitions/JournalMessage'
+  /journals/{issn}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Journals
+      parameters:
+        - name: issn
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /licenses:
+    get:
+      description: List of licenses registered against works in the Crossref database
+      tags:
+        - Licenses
+        - List
+      responses:
+        200:
+          description: A list of license URLs
+          schema:
+            $ref: '#/definitions/LicenseListMessage'
 
+parameters:
+  query:
+    name: query
+    type: string
+    in: query
+  query.title:
+    name: query.title
+    type: string
+    in: query
+  query.container-title:
+    name: query.container-title
+    type: string
+    in: query
+  query.author:
+    name: query.author
+    type: string
+    in: query
+  query.editor:
+    name: query.editor
+    type: string
+    in: query
+  query.translator:
+    name: query.translator
+    type: string
+    in: query
+  query.chair:
+    name: query.chair
+    type: string
+    in: query
+  query.contributor:
+    name: query.contributor
+    type: string
+    in: query
+  filter:
+    name: filter
+    in: query
+    type: array
+    items:
+      $ref: '#/definitions/FilterDefinition'
+    collectionFormat: csv
+  facet:
+    name: facet
+    in: query
+    type: array
+    items:
+      $ref: '#/definitions/FacetDefinition'
+    collectionFormat: csv
+  sample:
+    name: sample
+    type: integer
+    in: query
+  rows:
+    name: rows
+    type: integer
+    in: query
+  offset:
+    name: offset
+    type: integer
+    in: query
+  cursor:
+    name: cursor
+    type: string
+    in: query
+  sort:
+    name: sort
+    in: query
+    type: string
+  order:
+    name: order
+    in: query
+    type: string
+    enum: ["asc", "desc"]
+  
+definitions:
+  FilterDefinition:
+    type: string
+
+  FacetDefinition:
+    type: string
+    
   QueryInformation:
     type: object
     required:
@@ -186,14 +555,15 @@ definitions:
     properties:
       status:
         type: string
-        value: 'ok'
       message-type:
         type: string
-        value: 'work'
       message-version:
         type: string
       message:
         $ref: '#/definitions/Work'
+
+  WorkAgencyMessage:
+    type: object
 
   WorkListMessage:
     type: object
@@ -205,10 +575,8 @@ definitions:
     properties:
       status:
         type: string
-        value: 'ok'
       message-type:
         type: string
-        value: 'work-list'
       message-version:
         type: string
       message:
@@ -235,7 +603,6 @@ definitions:
           $ref: '#/definitions/Work'
       facets:
         $ref: '#/definitions/FacetResults'
-        
 
   Work:
     type: object
@@ -259,7 +626,7 @@ definitions:
         items:
           type: string
       reference-count:
-        type: number
+        type: integer
       source:
         type: string
       prefix:
@@ -297,7 +664,7 @@ definitions:
       published-print:
         $ref: '#/definitions/PartialDate'
       published-online:
-        $ref: '#/defintions/PartialDate'
+        $ref: '#/definitions/PartialDate'
       subject:
         type: array
         items:
@@ -317,7 +684,7 @@ definitions:
       license:
         type: array
         items:
-          $ref: '#/defintions/License'
+          $ref: '#/definitions/License'
       funder:
         type: array
         items:
@@ -414,6 +781,7 @@ definitions:
       - name
     properties:
       name:
+        example: Department of Computer Science, University of Oxford; Oxford, UK
         type: string
 
   Date:
@@ -434,6 +802,7 @@ definitions:
 
   PartialDate:
     type: object
+    example: [ 2016, 8, 4 ]
     required:
       - date-parts
     properties:
@@ -524,3 +893,50 @@ definitions:
         type: string
       content-type:
         type: string
+
+  TypeMessage:
+    type: object
+
+  TypeListMessage:
+    type: object
+        
+  Type:
+    type: object
+    required:
+      - id
+      - label
+    properties:
+      id:
+        type: string
+      label:
+        type: string
+
+  LicenseListMessage:
+    type: object
+
+  FunderMessage:
+    type: object
+
+  FunderListMessage:
+    type: object
+
+  MemberMessage:
+    type: object
+
+  MemberListMessage:
+    type: object
+
+  PrefixMessage:
+    type: object
+
+  LicenseListMessage:
+    type: object
+
+  JournalListMessage:
+    type: object
+
+  JournalMessage:
+    type: object
+
+  PrefixListMessage:
+    type: object
