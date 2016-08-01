@@ -896,9 +896,21 @@ definitions:
 
   TypeMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Type'
 
   TypeListMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/Type'
         
   Type:
     type: object
@@ -914,14 +926,148 @@ definitions:
   LicenseListMessage:
     type: object
 
+  PrefixReferenceStatus:
+    type: object
+    required:
+      - value
+      - name
+      - public-references
+
+  AbridgedFunder:
+    type: object
+    required:
+      - id
+      - location
+      - name
+      - alt-names
+      - uri
+      - replaces
+      - replaced-by
+      - tokens
+    properties:
+      id:
+        type: integer
+      location:
+        type: string
+      name:
+        type: string
+      alt-names:
+        type: array
+        items:
+          type: string
+      uri:
+        type: string
+      replaces:
+        type: array
+        items:
+          type: string
+      replaced-by:
+        type: array
+        items:
+          type: string
+      tokens:
+        type: array
+        items:
+          type: string
+
+  Funder:
+    type: object
+    allOf:
+      - $ref: '#/definitions/AbridgedFunder'
+    required:
+      - hierarchy-names
+      - hierarchy
+      - work-count
+      - descendants
+      - descendant-work-count
+    properties:
+      hierarchy-names:
+        type: object
+      hierarchy:
+        type: object
+      work-count:
+        type: integer
+      descendants:
+        type: array
+        items:
+          type: string
+      descendant-work-count:
+        type: integer
+
   FunderMessage:
     type: object
-
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Funder'
+        
   FunderListMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/AbridgedFunder'
+
+  Member:
+    type: object
+    required:
+      - last-status-check-time
+      - primary-name
+      - counts
+      - breakdowns
+      - prefixes
+      - coverage
+      - prefix
+      - id
+      - tokens
+      - flags
+      - location
+      - names
+    properties:
+      last-status-check-time:
+        type: number
+      primary-name:
+        type: string
+      counts:
+        $ref: '#/definitions/WorkCounts'
+      breakdowns:
+        $ref: '#/definitions/WorkBreakdowns'
+      prefixes:
+        type: array
+        items:
+          type: string
+      coverage:
+        $ref: '#/definitions/WorkFeatureCoverage'
+      prefix:
+        type: array
+        items:
+          $ref: '#/definitions/PrefixReferenceStatus'
+      id:
+        type: number
+      tokens:
+        type: array
+        items:
+          type: string
+      flags:
+        $ref: '#/definitions/WorkFeatureFlags'
+      location:
+        type: string
+      names:
+        type: array
+        items:
+          type: string
 
   MemberMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Member'
 
   MemberListMessage:
     type: object
@@ -930,9 +1076,9 @@ definitions:
     type: object
     required:
       - message
-    parameters:
+    properties:
       message:
-        $ref: '#/defintions/Prefix'
+        $ref: '#/definitions/Prefix'
 
   LicenseListMessage:
     type: object
@@ -956,7 +1102,7 @@ definitions:
       - orcids-current
       - references-backfile
       - award-numbers-backfile
-      - update-policies-current
+      - update-policies-backfile
       - licenses-current
       - award-numbers-current
       - resource-links-current
@@ -1000,7 +1146,9 @@ definitions:
         type: array
         items:
           type: array
-          items: integer
+          items:
+            type: integer
+            example: [2014, 27431]
         description: "`[year, count]` tuples counting the number of associated DOIs issued (published) each year"
 
   WorkCounts:
@@ -1064,7 +1212,8 @@ definitions:
     properties:
       message:
         type: array
-        items: '#/definitions/Journal'
+        items:
+          $ref: '#/definitions/Journal'
 
   JournalMessage:
     type: object
