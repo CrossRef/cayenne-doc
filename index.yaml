@@ -170,6 +170,7 @@ paths:
             type: string
   /funders:
     get:
+      summary: List and Search for Funders
       tags:
         - Funders
         - List
@@ -185,6 +186,8 @@ paths:
             $ref: '#/definitions/FunderListMessage'
   /funders/{funderDoi}:
     get:
+      summary: Look up a Funder
+      description: "Look up a funder by its [Open Funder Registry](http://www.crossref.org/fundingdata/registry.html) DOI"
       tags:
         - Funders
         - Identifier Lookup
@@ -200,6 +203,7 @@ paths:
             $ref: '#/definitions/FunderMessage'
   /funders/{funderDoi}/works:
     get:
+      summary: List and Search on  Works for a Funder
       tags:
         - Works
         - Query
@@ -441,6 +445,7 @@ paths:
             $ref: '#/definitions/WorkListMessage'
   /licenses:
     get:
+      summary: List licenses
       description: List of licenses registered against works in the Crossref database
       tags:
         - Licenses
@@ -970,10 +975,8 @@ definitions:
         items:
           type: string
 
-  Funder:
+  RestFunder:
     type: object
-    allOf:
-      - $ref: '#/definitions/AbridgedFunder'
     required:
       - hierarchy-names
       - hierarchy
@@ -993,6 +996,12 @@ definitions:
           type: string
       descendant-work-count:
         type: integer
+
+  Funder:
+    type: object
+    allOf:
+      - $ref: '#/definitions/AbridgedFunder'
+      - $ref: '#/definitions/RestFunder'
 
   FunderMessage:
     type: object
