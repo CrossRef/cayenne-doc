@@ -928,15 +928,187 @@ definitions:
 
   PrefixMessage:
     type: object
+    required:
+      - message
+    parameters:
+      message:
+        $ref: '#/defintions/Prefix'
 
   LicenseListMessage:
     type: object
 
+  WorkFeatureFlags:
+    type: object
+
+  WorkFeatureCoverage:
+    type: object
+    description:
+      Describes the percentage of DOIs associated with either a journal or publisher that
+      exhibit particular features. The features are calculated on a `current` and `backfile`
+      basis. Current refers to the most recent two years of published DOIs.
+    required:
+      - funders-backfile
+      - licenses-backfile
+      - funders-current
+      - resource-links-backfile
+      - orcids-backfile
+      - update-policies-current
+      - orcids-current
+      - references-backfile
+      - award-numbers-backfile
+      - update-policies-current
+      - licenses-current
+      - award-numbers-current
+      - resource-links-current
+      - references-current
+    properties:
+      funders-backfile:
+        type: number
+      licenses-backfile:
+        type: number
+      funders-current:
+        type: number
+      resource-links-backfile:
+        type: number
+      orcids-backfile:
+        type: number
+      update-policies-current:
+        type: number
+      orcids-current:
+        type: number
+      references-backfile:
+        type: number
+      award-numbers-backfile:
+        type: number
+      update-policies-backfile:
+        type: number
+      licenses-current:
+        type: number
+      award-numbers-current:
+        type: number
+      resource-links-current:
+        type: number
+      references-current:
+        type: number
+
+  WorkBreakdowns:
+    type: object
+    required:
+      - dois-issued-by-year
+    properties:
+      dois-issued-by-year:
+        type: array
+        items:
+          type: array
+          items: integer
+        description: "`[year, count]` tuples counting the number of associated DOIs issued (published) each year"
+
+  WorkCounts:
+    type: object
+    required:
+      - total-dois
+      - current-dois
+      - backfile-dois
+    properties:
+      total-dois:
+        description: "Total number of associated DOIs"
+        type: integer
+      current-dois:
+        description: "Number of associated DOIs published in the last two years"
+        type: integer
+      backfile-dois:
+        description: "Number of associated DOIs published more than two years ago"
+        type: integer
+
+  Journal:
+    type: object
+    required:
+      - title
+      - publisher
+      - ISSN
+      - flags
+      - coverage
+      - breakdowns
+      - counts
+      - last-status-check-time
+    properties:
+      title:
+        type: string
+        description: Primary title of the journal
+        example: Journal of Computer Documentation
+      publisher:
+        type: string
+        description: "Primary name of the journal's publisher"
+        example: ACM
+      ISSN:
+        type: array
+        items:
+          type: string
+        description: All ISSNs, print, electronic and link, for the journal
+        example: [ "1527-6805" ]
+      flags:
+        $ref: '#/definitions/WorkFeatureFlags'
+      coverage:
+        $ref: '#/definitions/WorkFeatureCoverage'
+      counts:
+        $ref: '#/definitions/WorkCounts'
+      breakdowns:
+        $ref: '#/definitions/WorkBreakdowns'
+      last-status-check-time:
+        type: integer
+
   JournalListMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items: '#/definitions/Journal'
 
   JournalMessage:
     type: object
+    required:
+      - status
+      - message
+      - message-version
+      - message-type
+    properties:
+      status:
+        type: string
+      message-type:
+        type: string
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/Journal'
+
+  Prefix:
+    type: object
+    required:
+      - member
+      - name
+      - prefix
+    properties:
+      member:
+        description: Primary member with deposit permission for the owner prefix. Member URL of the form `http://id.crossref.org/member/{memberId}`
+        example: http://id.crossref.org/member/311
+        type: string
+      name:
+        description: Primary name of the owning organisation
+        example: PeerJ
+        type: string
+      prefix:
+        description: A prefix URL of the form `http://id.crossref.org/prefix/{prefix}`
+        example: http://id.crossref.org/prefix/10.1003
+        type: string
 
   PrefixListMessage:
     type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/Prefix'
