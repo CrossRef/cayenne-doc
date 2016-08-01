@@ -1,0 +1,143 @@
+
+    <!-- Footer -->
+    <footer class='top-footer'>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-lg-offset-2 col-md-4 col-md-offset-2 text-center">
+            <a href='{{ .Site.BaseURL }}/join/'><button>Join the Crossref community</button></a>
+          </div>
+          <div class="col-lg-4 col-md-4 signup">
+            <div class="signup-wrapper">
+              <p>Sign up for Crossref updates</p>
+              <input id='email-signup' placeholder='Email' /><input type="submit" id="email-submit" value="Go">
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <footer class='bottom-footer'>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+            <div class="col-lg-2 col-lg-offset-1 col-md-2 col-md-offset-1 col-sm-12 col-xs-12">
+              <p class="address">Crossref
+              50 Salem St
+              Lynnfield
+              MA 01940</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+              <a href='{{ .Site.BaseURL }}/join/'>Join</a><br />
+              Resources<br />
+              Dashboard<br />
+              Title title
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+              <a href='{{ .Site.BaseURL }}/about/'>About</a><br />
+              Contact<br />
+              Governance<br />
+              Title title
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+              Title title<br />
+              Title title<br />
+              Title title<br />
+              Title title
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+              Title title<br />
+              Title title<br />
+              Title title<br />
+              Title title
+            </div>
+          </div>
+
+        </div>
+
+    </footer>
+    <footer class='very-bottom-footer'>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9">
+          	{{.Site.Data.boilerplate.footer.attribution_link | markdownify}}
+          </div>
+          <div class="col-lg-1">
+         	 <a href='{{ .Site.BaseURL }}/terms/'>Terms</a>
+          </div>
+          <div class="col-lg-1">
+         	 <a href='{{ .Site.BaseURL }}/about/'>Privacy</a>
+          </div>
+          <div class="col-lg-1">
+          	<a href='{{ .Site.BaseURL }}/security/'>Security</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{{ .Site.BaseURL }}/js/jquery.min.js"></script>
+    <script src="{{ .Site.BaseURL }}/js/jquery.ui-min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ .Site.BaseURL }}/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ .Site.BaseURL }}/js/crossref.js"></script>
+
+    {{ if isset .Site.Params "acton" }}{{ partial "acton.html" . }}{{ end }}
+
+    <!-- Enable MathJax display -->
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script>
+
+      // If you use this code, please link to this pen (cdpn.io/rkcjt). Thanks :)
+
+      var DrawEye = function(eyecontainer, pupil, eyeposx, eyeposy){
+        // Initialise core variables
+        var eyeposx = $(eyecontainer).offset().left;
+        var eyeposy = $(eyecontainer).offset().top;
+
+        var r = $(pupil).width()/2;
+        var center = {
+          x: $(eyecontainer).width()/2 - r, 
+          y: $(eyecontainer).height()/2 - r
+        };
+        var distanceThreshold = $(eyecontainer).width()/2 - r;
+        var mouseX = 0, mouseY = 0;
+        
+        // Listen for mouse movement
+        $(window).mousemove(function(e){ 
+          var d = {
+            x: e.pageX - r - eyeposx - center.x,
+            y: e.pageY - r - eyeposy - center.y
+          };
+          var distance = Math.sqrt(d.x*d.x + d.y*d.y);
+          if (distance < distanceThreshold) {
+            mouseX = e.pageX - eyeposx - r;
+            mouseY = e.pageY - eyeposy - r;
+          } else {
+            mouseX = d.x / distance * distanceThreshold + center.x;
+            mouseY = d.y / distance * distanceThreshold + center.y;
+          }
+        });
+        
+        // Update pupil location
+        var pupil = $(pupil);
+        var xp = 0, yp = 0;
+        var loop = setInterval(function(){
+          // change 1 to alter damping/momentum - higher is slower
+          xp += (mouseX - xp) / 1;
+          yp += (mouseY - yp) / 1;
+          pupil.css({left:xp, top:yp});    
+        }, 1);
+      };
+      $( document ).ready(function() {
+        var spriteeye = new DrawEye("#oneeye", "#onepupil", 1040, 141);
+      });
+    </script>
+</body>
+
+</html>
