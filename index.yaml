@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: Crossref Metadata API
+  title: Metadata API
   description: Query Crossref metadata covering works, journals, publishers, funders and more.
   version: "1.0.0"
 host: api.crossref.org

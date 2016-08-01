@@ -1,35 +1,29 @@
 {{ partial "api/header.html" . }}
 
-<header class="intro-header" style="">
-  <div class="container" style="">
+<header class="intro-header">
+  <div class="container">
 
-    <div class="row" style=''>
-      <div class="col-lg-12">
-        <div class="labs-header">
+    <div class="row">
+      <div class="col-lg-5">
+	<div class="page-heading" style="margin-top: -275px">
+	  <p>Query Crossref metadata covering works, journals, publishers, funder and more</p>
+	  <h1>Metadata API</h1>
+	</div>
+      </div>
+      <div class="col-lg-7">
           <div class="sprite-1">
             <div id="oneeye">
               <div id="onepupil"></div>
             </div>
           </div>
-        </div>
       </div>
     </div>
 
   </div>
 </header>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="page-heading">
-        <h1>{{ .Title }}</h1>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Main Content -->
-<div class="container">
+<div class="container" style="margin-top: 40px">
   <div class="row">
     <div class="col-lg-4">
       {{ .TableOfContents }}
@@ -40,6 +34,5 @@
     </div>
   </div>
 </div>
-
 
 {{ partial "api/footer.html" . }}
