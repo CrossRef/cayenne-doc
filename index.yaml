@@ -623,6 +623,7 @@ definitions:
       - deposited
       - indexed
       - issued
+      - content-domains
     properties:
       publisher:
         type: string
@@ -732,6 +733,21 @@ definitions:
         type: array
         items:
           type: string
+      content-domains:
+        $ref: '#/definitions/ContentDomains'
+
+  ContentDomains:
+    type: object
+    required:
+      - domains
+      - crossmark-restricted
+    properties:
+      domains:
+        type: array
+        items:
+          type: string
+      crossmark-restricted:
+        type: boolean
 
   Funder:
     type: object
