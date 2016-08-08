@@ -651,6 +651,10 @@ definitions:
         $ref: '#/definitions/Date'      
       issued:
         $ref: '#/definitions/PartialDate'
+      posted:
+        $ref: '#/definitions/PartialDate'
+      accepted:
+        $ref: '#/definitions/PartialDate'
       subtitle:
         type: array
         items:
