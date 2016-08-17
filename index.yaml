@@ -650,6 +650,8 @@ definitions:
       indexed:
         $ref: '#/definitions/Date'      
       issued:
+        description:
+          Earliest of `posted`, `published`, `published-print` and `published-online`
         $ref: '#/definitions/PartialDate'
       posted:
         $ref: '#/definitions/PartialDate'
@@ -663,6 +665,9 @@ definitions:
         type: array
         items:
           type: string
+      abstract:
+        type: string
+        description: Abstract as an XML block containing JATS markup elements. Elements will appear with a namespace prefix `jats`.
       issue:
         type: string
       volume:
