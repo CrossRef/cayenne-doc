@@ -631,6 +631,14 @@ definitions:
         type: array
         items:
           type: string
+      short-title:
+        type: array
+        items:
+          type: string
+      original-title:
+        type: array
+        items:
+          type: string
       reference-count:
         type: integer
       source:
@@ -662,6 +670,10 @@ definitions:
         items:
           type: string
       container-title:
+        type: array
+        items:
+          type: string
+      short-container-title:
         type: array
         items:
           type: string
