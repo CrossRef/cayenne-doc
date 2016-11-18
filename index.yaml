@@ -659,11 +659,16 @@ definitions:
         $ref: '#/definitions/Date'      
       issued:
         description:
-          Earliest of `posted`, `published`, `published-print` and `published-online`
+          Earliest of `posted`, `published`, `published-print`, `published-online` and `content-created`
+          (database / dataset only)
         $ref: '#/definitions/PartialDate'
       posted:
         $ref: '#/definitions/PartialDate'
       accepted:
+        $ref: '#/definitions/PartialDate'
+      content-created:
+        description:
+          Date a database or dataset was created
         $ref: '#/definitions/PartialDate'
       subtitle:
         type: array
@@ -756,6 +761,10 @@ definitions:
           type: string
       content-domains:
         $ref: '#/definitions/ContentDomains'
+      issn-type:
+        type: array
+        items:
+          $ref: '#/definitions/IssnWithType'
 
   ContentDomains:
     type: object
@@ -825,6 +834,18 @@ definitions:
       name:
         example: Department of Computer Science, University of Oxford; Oxford, UK
         type: string
+
+  IssnWithType:
+    type: object
+    required:
+      - value
+      - type
+    properties:
+      value:
+        type: string
+      type:
+        type: string
+        enum: ['print', 'electronic', 'link']
 
   Date:
     type: object
