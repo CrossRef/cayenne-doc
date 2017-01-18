@@ -587,6 +587,30 @@ definitions:
       message:
         $ref: '#/definitions/WorkList'
 
+  Event:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      acronym:
+        type: string
+      sponsor:
+        type: array
+        items:
+          type: string
+      location:
+        type: string
+      theme:
+        type: string
+      number:
+        type: string
+      start:
+        $ref: '#/definitions/PartialDate'
+      end:
+        $ref: '#/definitions/PartialDate'
+
   WorkList:
     type: object
     required:
@@ -765,6 +789,8 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/IssnWithType'
+      event:
+        $ref: '#/definitions/Event'
 
   ContentDomains:
     type: object
