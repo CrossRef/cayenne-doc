@@ -847,6 +847,11 @@ definitions:
         type: string
       ORCID:
         type: string
+      authenticated-orcid:
+        type: boolean
+        description:
+          If true, depositing member claims to have witnessed the ORCID
+          user successfully authenticate with ORCID.
       affiliation:
         type: array
         items:
